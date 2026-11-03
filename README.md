@@ -82,13 +82,11 @@ streamlit run app.py
 
 The app loads the saved files from `model/`. To reproduce the training artifacts locally, run `python train_models.py`; this writes the model files, `test_data.csv`, and `metrics_summary.csv` beside the scripts.
 
-## Deploy on Streamlit Community Cloud
+## Streamlit Deployment
+Check the deployed app at - [Streamlit deployment - multimodelsmetricsevals](https://multimodelsmetricsevals.streamlit.app/)
 
-1. Push the project to GitHub, including all five `.joblib` files in `model/`.
-2. In Streamlit Community Cloud, create an app from this repository, select branch `main`, and set the app file to `app.py`.
-3. Deploy the app. For an existing deployment, reboot it after the required files are pushed.
 
-Streamlit Cloud installs the packages in `requirements.txt`; it does not train the models. The deployed app loads the committed model files and does not need to retrain them at startup. The `model/` directory must be present in the selected branch beside `app.py`.
+Streamlit Cloud installs the packages in `requirements.txt`; it does not train the models. The deployed app loads the committed model files and does not need to retrain them at startup. 
 
 ## References
 
