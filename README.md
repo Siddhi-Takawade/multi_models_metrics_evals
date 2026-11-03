@@ -47,11 +47,26 @@ The following models are evaluated on the same held-out test split:
 
 For all binary metrics, class 1 (benign) is treated as the positive class. AUC uses each model's positive-class probability or decision score. Values are rounded to four decimal places from `metrics_summary.csv`.
 
+### Observations on Model Performance
+
+| ML Model Name | Observation about model performance |
+|---|---|
+| Logistic Regression | Tied for the highest accuracy (0.9825) and achieved the highest AUC (0.9954). It also tied for the highest F1 and MCC. |
+| Decision Tree | Had the lowest accuracy (0.9123) and MCC (0.8174) among the five models on this split. |
+| KNN | Achieved the highest recall (1.0000), identifying all positive-class examples in this test split. Its precision was 0.9600. |
+| Naive Bayes | Reached an AUC of 0.9878, while its accuracy (0.9386) and MCC (0.8676) were lower than those of Logistic Regression, KNN, and SVM. |
+| Support Vector Machine | Tied Logistic Regression for the highest accuracy (0.9825), F1, and MCC, with an AUC of 0.9950. |
+| Overall, Winner for your dataset? | Logistic Regression is the winner by AUC (0.9954). It also tied for best accuracy, F1, and MCC. This conclusion is based on one fixed holdout split. |
+
 Logistic Regression has the highest AUC (0.9954) and ties the SVM for the highest accuracy (0.9825), F1, and MCC. KNN has the highest recall (1.0000) on this split. The Decision Tree has the lowest accuracy and MCC among these runs. These results are from one fixed holdout split and do not establish how the models will perform on other data.
+
+These observations describe current test split only.
 
 ## Streamlit App
 
 The app accepts a labeled CSV containing the same 30 input feature columns and a `target` column. It compares all five saved models and displays the selected model's metrics, confusion matrix, and classification report.
+
+Check the deployed app at - [Streamlit deployment - multimodelsmetricsevals](https://multimodelsmetricsevals.streamlit.app/)
 
 ## Project Structure
 
