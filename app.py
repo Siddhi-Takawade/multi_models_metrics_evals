@@ -22,7 +22,7 @@ from sklearn.metrics import (
 
 st.set_page_config(page_title="ML Assignment 2 - Classifier Evaluation", layout="wide")
 
-MODEL_DIR = Path("model")
+MODEL_DIR = Path(__file__).resolve().parent / "model"
 
 MODEL_FILES = {
     "Logistic Regression": "logistic_regression.joblib",

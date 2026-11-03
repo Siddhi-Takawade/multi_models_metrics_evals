@@ -25,9 +25,10 @@ from sklearn.tree import DecisionTreeClassifier
 
 
 RANDOM_STATE = 42
-MODEL_DIR = Path("model")
-TEST_DATA_PATH = Path("test_data.csv")
-METRICS_PATH = Path("metrics_summary.csv")
+BASE_DIR = Path(__file__).resolve().parent
+MODEL_DIR = BASE_DIR / "model"
+TEST_DATA_PATH = BASE_DIR / "test_data.csv"
+METRICS_PATH = BASE_DIR / "metrics_summary.csv"
 
 
 def build_models() -> Dict[str, Any]:
