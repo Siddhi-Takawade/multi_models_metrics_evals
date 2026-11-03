@@ -92,11 +92,14 @@ ml_assignment_2/
 - Evaluation metrics, confusion matrix, and classification report for the selected model
 
 ## Deployment on Streamlit Community Cloud
-1. Push this project to GitHub.
-2. Open https://streamlit.io/cloud and sign in.
-3. Click New App and select your repository.
-4. Select branch and `app.py`.
-5. Deploy and copy the live app URL.
+1. Run `python train_models.py` locally to generate all five saved models.
+2. Push this project to GitHub, including the complete `model/` folder and its five `.joblib` files. Verify that these files appear on GitHub in the branch you deploy. Streamlit installs dependencies but does not automatically run `train_models.py`.
+3. Open https://streamlit.io/cloud and sign in.
+4. Click New App and select your repository.
+5. Select the branch and `app.py` (or its repository-relative path if the project is in a subfolder).
+6. Deploy and copy the live app URL. For an existing deployment, reboot the app after pushing the missing model files and updated code.
+
+Model paths are resolved relative to `app.py`, so launching Streamlit from another directory is supported. If you see `Model file not found`, confirm that `model/` is beside `app.py` in the deployed GitHub branch, not only on your computer.
 
 ## Notes for submission PDF
 Include in your final PDF:
