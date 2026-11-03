@@ -1,59 +1,62 @@
-# Machine Learning Assignment 2 - Classification and Streamlit Deployment
+# Breast Cancer Classification Model Evaluation
 
-## a. Problem statement
-Build and compare five machine learning classification models on one dataset, evaluate them with standard metrics, and deploy the results through an interactive Streamlit web application.
+This project trains and compares five binary classification models using the Breast Cancer Wisconsin Diagnostic dataset. A Streamlit app evaluates the saved models against an uploaded, labeled CSV file.
 
-## b. Dataset description
-- Dataset Name: Breast Cancer Wisconsin (Diagnostic)
-- Source: [UCI Machine Learning Repository](https://archive.ics.uci.edu/dataset/17/breast+cancer+wisconsin+diagnostic); loaded locally from scikit-learn's bundled copy
-- Task Type: Binary classification
-- Instances: 569
-- Features: 30 numerical input features
-- Target: `target` (0 = malignant, 1 = benign)
+## a. Problem Statement
 
-This dataset satisfies assignment constraints:
-- Minimum features required: 12 (available: 30)
-- Minimum instances required: 500 (available: 569)
+The goal is to use the dataset's diagnostic measurements to classify each case as malignant or benign. Five classification algorithms are trained on the same training split and compared using standard classification metrics. This project is for coursework and is not intended for medical diagnosis or clinical decision-making.
 
-## c. Github Repository Link
-- Add your repository link here after pushing code:
-- Example: https://github.com/<your-username>/<your-repo-name>
+## b. Dataset Description
 
-## d. Models used
-Implemented models:
-1. Logistic Regression
+| Item | Description |
+|---|---|
+| Dataset | Breast Cancer Wisconsin (Diagnostic) |
+| Source | Scikit-learn's bundled `load_breast_cancer` dataset; originally from the UCI Machine Learning Repository |
+| Observations | 569 |
+| Input features | 30 numerical diagnostic measurements |
+| Target | `target`: 0 = malignant, 1 = benign |
+| Task | Binary classification |
+
+The data is split into 80% training and 20% test data using stratification and `random_state=42`. Standard scaling is used inside the Logistic Regression, KNN, and SVM pipelines. Decision Tree and Gaussian Naive Bayes are trained without scaling.
+
+## c. GitHub Repository
+
+[Siddhi-Takawade/multi_models_metrics_evals](https://github.com/Siddhi-Takawade/multi_models_metrics_evals)
+
+Live Streamlit app: add the app URL after deployment has been verified.
+
+## d. Models and Evaluation
+
+The following models are evaluated on the same held-out test split:
+
+1. Logistic Regression with StandardScaler
 2. Decision Tree Classifier
-3. K-Nearest Neighbor (KNN) Classifier
-4. Naive Bayes Classifier (GaussianNB)
-5. Support Vector Machine (SVM)
+3. K-Nearest Neighbors (KNN, 7 neighbors) with StandardScaler
+4. Gaussian Naive Bayes
+5. Support Vector Machine (RBF kernel, probability scores enabled) with StandardScaler
 
-### Comparison Table (Evaluation Metrics)
+### Holdout Results
 
-| ML Model Name | Accuracy | AUC | Precision | Recall | F1 | MCC |
+| Model | Accuracy | AUC | Precision | Recall | F1 | MCC |
 |---|---:|---:|---:|---:|---:|---:|
 | Logistic Regression | 0.9825 | 0.9954 | 0.9861 | 0.9861 | 0.9861 | 0.9623 |
 | Decision Tree | 0.9123 | 0.9157 | 0.9559 | 0.9028 | 0.9286 | 0.8174 |
 | KNN | 0.9737 | 0.9884 | 0.9600 | 1.0000 | 0.9796 | 0.9442 |
-| Naive Bayes | 0.9386 | 0.9878 | 0.9452 | 0.9583 | 0.9517 | 0.8676 |
+| Gaussian Naive Bayes | 0.9386 | 0.9878 | 0.9452 | 0.9583 | 0.9517 | 0.8676 |
 | Support Vector Machine | 0.9825 | 0.9950 | 0.9861 | 0.9861 | 0.9861 | 0.9623 |
 
-Metrics use the stratified 20% holdout split with `random_state=42`. For binary metrics, class `1` (benign) is treated as the positive class. Values are rounded to four decimal places from `metrics_summary.csv`.
+For all binary metrics, class 1 (benign) is treated as the positive class. AUC uses each model's positive-class probability or decision score. Values are rounded to four decimal places from `metrics_summary.csv`.
 
-### Model Performance Observations
+Logistic Regression has the highest AUC (0.9954) and ties the SVM for the highest accuracy (0.9825), F1, and MCC. KNN has the highest recall (1.0000) on this split. The Decision Tree has the lowest accuracy and MCC among these runs. These results are from one fixed holdout split and do not establish how the models will perform on other data.
 
-| ML Model Name | Observation about model performance |
-|---|---|
-| Logistic Regression | Tied for top accuracy (0.9825) and achieved the highest AUC (0.9954), with balanced precision and recall. Scaling is included in its pipeline. |
-| Decision Tree | Lowest holdout accuracy (0.9123) and MCC (0.8174) among these runs, though precision remained high (0.9559). This single tree may not generalize as consistently as the scaled models. |
-| KNN | Strong accuracy (0.9737) and the highest recall (1.0000), meaning it identified every positive-class example in this split; its precision was lower than the top two models. |
-| Naive Bayes | AUC was strong (0.9878), but accuracy (0.9386) and MCC (0.8676) were below Logistic Regression, SVM, and KNN on this split. |
-| Support Vector Machine | Tied for top accuracy (0.9825), with AUC 0.9950 and balanced precision/recall. It performed nearly identically to Logistic Regression on this holdout. |
-| Overall, Winner for your dataset? | Logistic Regression is the winner by holdout AUC (0.9954) and is tied for best accuracy, F1, and MCC. These results reflect one fixed split and should not be treated as a guarantee of future performance. |
+## Streamlit App
+
+The app accepts a labeled CSV containing the same 30 input feature columns and a `target` column. It compares all five saved models and displays the selected model's metrics, confusion matrix, and classification report.
 
 ## Project Structure
 
 ```text
-ml_assignment_2/
+multi_models_metrics_evals/
 |-- app.py
 |-- train_models.py
 |-- requirements.txt
@@ -68,44 +71,27 @@ ml_assignment_2/
 |   |-- support_vector_machine.joblib
 ```
 
-## How to run locally
+## Run Locally
 
-1. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
+Install the dependencies and start the app:
 
-2. Train and save models + generate test data:
-   ```bash
-   python train_models.py
-   ```
+```bash
+pip install -r requirements.txt
+streamlit run app.py
+```
 
-3. Run Streamlit app:
-   ```bash
-   streamlit run app.py
-   ```
+The app loads the saved files from `model/`. To reproduce the training artifacts locally, run `python train_models.py`; this writes the model files, `test_data.csv`, and `metrics_summary.csv` beside the scripts.
 
-## Streamlit app features (as required)
-- CSV upload option for test data
-- Uploaded-CSV comparison table for all five saved models
-- Model selection dropdown for detailed results
-- Evaluation metrics, confusion matrix, and classification report for the selected model
+## Deploy on Streamlit Community Cloud
 
-## Deployment on Streamlit Community Cloud
-1. Run `python train_models.py` locally to generate all five saved models.
-2. Push this project to GitHub, including the complete `model/` folder and its five `.joblib` files. Verify that these files appear on GitHub in the branch you deploy. Streamlit installs dependencies but does not automatically run `train_models.py`.
-3. Open https://streamlit.io/cloud and sign in.
-4. Click New App and select your repository.
-5. Select the branch and `app.py` (or its repository-relative path if the project is in a subfolder).
-6. Deploy and copy the live app URL. For an existing deployment, reboot the app after pushing the missing model files and updated code.
+1. Push the project to GitHub, including all five `.joblib` files in `model/`.
+2. In Streamlit Community Cloud, create an app from this repository, select branch `main`, and set the app file to `app.py`.
+3. Deploy the app. For an existing deployment, reboot it after the required files are pushed.
 
-Model paths are resolved relative to `app.py`, so launching Streamlit from another directory is supported. If you see `Model file not found`, confirm that `model/` is beside `app.py` in the deployed GitHub branch, not only on your computer.
+Streamlit Cloud installs the packages in `requirements.txt`; it does not train the models. The deployed app loads the committed model files and does not need to retrain them at startup. The `model/` directory must be present in the selected branch beside `app.py`.
 
-## Notes for submission PDF
-Include in your final PDF:
-1. GitHub repository link
-2. Live Streamlit app link
-3. Screenshot proving execution on BITS Virtual Lab
-4. Full README content
+## References
 
-Before submission, replace the repository and live-app link placeholders after publishing your own GitHub repository and deploying it. Run the project in BITS Virtual Lab yourself and insert your genuine execution screenshot; this workspace cannot provide proof of a session in that external lab.
+- [UCI Machine Learning Repository: Breast Cancer Wisconsin (Diagnostic)](https://archive.ics.uci.edu/dataset/17/breast+cancer+wisconsin+diagnostic)
+- [Scikit-learn: Breast cancer dataset](https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_breast_cancer.html)
+- [Streamlit Community Cloud](https://share.streamlit.io/)
